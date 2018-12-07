@@ -1,0 +1,30 @@
+{
+  "name": "Messenger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MamFrienz/Messenger_App.git"
+  },
+  "author": "MamFrienz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MamFrienz/Messenger_App/issues"
+  },
+  "homepage": "https://github.com/MamFrienz/Messenger_App#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.15",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.7"
+  }
+}

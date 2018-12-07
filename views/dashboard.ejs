@@ -1,0 +1,108 @@
+<%include ./partials/header.ejs%>
+    <div class="row">
+        <div class="col-md-3 text-center" id="dash-side-bar">
+            <strong><h1>Chat History</h1></strong>
+            <div class="container" id="history">
+                <div class="Text-center">
+                    <% for(var i=0; i<chat_history.length; i++){ %>
+                        <a href="/chatroom/<%=chat_history[i].chatroomID%>" class="w3-bar-item w3-button"><%= chat_history[i].chatroomName %></a><br>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="jumbotron jumbo text-center" id="dash-welcome-jumbo">
+                <h1>Welcome <%=title%> !!</h1>
+            </div>
+            <div class="container" style="width: 50%; margin-top: 15%">
+                <input style="background-color: #ebf8ef;" class="form-control" Placeholder="Enter Session Name" id="inp">
+                <br>
+                <button class="btn btn-dark btn-block" id="search-btn"><b>Search in your frindlist</b></button>
+                <button class="btn btn-dark btn-block" id="search" style="display: none"><b>Search</b></button>
+                <br>
+                <button class="btn btn-dark btn-block" id="create-btn"><b>Create Chatroom</b></button>
+                <button class="btn btn-dark btn-block" id="create" style="display: none"><b>Create</b></button>
+                <br>
+                <button class="btn btn-danger btn-block" id="cancel-btn" style="display: none"><b>Cancel</b></button>    
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+      
+    <script>
+        $( document ).ready(function(){
+            $('#inp').css("display", "none");
+        });
+        $('#search-btn').click(function(event){
+            $('#create-btn').css("display", "none");
+            $('#search-btn').css("display", "none");
+            
+            $('#inp').css("display", "block");
+            $('#search').css("display", "block");
+            $('#cancel-btn').css("display", "block");
+        });
+        
+        $('#create-btn').click(function(event){
+            $('#search-btn').css("display", "none");
+            $('#create-btn').css("display", "none");
+            
+            $('#inp').css("display", "block");
+            $('#create').css("display", "block");
+            $('#cancel-btn').css("display", "block");
+        });
+        
+        $('#cancel-btn').click(function(event){
+            $('#inp').css("display", "none");
+            
+            $('#search').css("display", "none");
+            $('#create').css("display", "none");
+            
+            $('#search-btn').css("display", "block");
+            $('#create-btn').css("display", "block");
+            
+            $('#cancel-btn').css("display", "none");
+        });
+        var id = '<%-user_id%>';
+        $('#create').click(function(event){
+            var chatroom = {
+                chatroomName: $('#inp').val(),
+                creator: id,
+                members: {name: '<%-title%>',id: id}
+            }
+            console.log(chatroom)
+            $.ajax({
+                method:"POST",
+                url:"/chatroom/create",
+                data: chatroom
+            }).done(function(response){
+                window.location.replace("/chatroom/"+id+"/"+response.chatroomID);
+            }).fail(function(response){
+                console.log(response.responseText);
+            });
+        });
+        
+        $('#search').click(function(event){
+            var chatroom = {
+                chatroomName: $('#inp').val(),
+            }
+
+            $.ajax({
+                method:"POST",
+                url:"/chatroom/search/",
+                data: chatroom
+            }).done(function(response){
+                localStorage.setItem('searchRes',JSON.stringify(response));
+                window.location.replace("/chatroom/search/results");
+            }).fail(function(response){
+                console.log(response.responseText);
+            });
+        });
+    </script>
+<%include ./partials/footer.ejs%>

@@ -1,0 +1,42 @@
+<%include ./partials/header.ejs%>
+    <div class="jumbotron text-center jumbo" id="">
+        <h1>15 Minutes Chat App</h1>
+    </div>
+    <div class="text-center container card card-body" id="login-card-size">
+        <h1>Get Started...</h1>
+        <div class="input-group">
+           <input style="background-color: #ebf8ef;" type="text" class="form-control" id="displayName" Placeholder="Enter Display Name">
+           <span class="input-group-btn">
+                <button class="btn btn-dark" type="button" id="submit">Enter!</button>
+           </span>
+        </div>   
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous">
+    </script>
+    
+    
+    <script type="text/javascript">
+        var user = {displayName:"", userID:""};
+        var browserUserID = localStorage.getItem('userID') ? localStorage.getItem('userID'):"";
+        
+        $('#submit').click(function(event){
+            user.displayName = $('#displayName').val();
+            user.userID = browserUserID;
+
+            $.ajax({
+                method:"POST",
+                url:"/user/login",
+                data: user
+            }).done(function(response){
+                localStorage.setItem('userID',response.userID);
+                window.location.replace("/user/"+response.userID);
+            }).fail(function(response){
+                console.log(response.responseText);
+            });
+        
+        });   
+    </script>
+<%include ./partials/footer.ejs%>

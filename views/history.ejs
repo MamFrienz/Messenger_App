@@ -1,0 +1,23 @@
+<%include ./partials/header.ejs%>
+    <div class="row">
+        <div class="col-md-3 text-center" id="dash-side-bar">
+            <strong><h1>Members</h1></strong>
+            <div class="container" id="members">
+                
+                <% for(var i=0; i<members.length; i++){ %>
+                    <a class="w3-bar-item"><%= members[i]%></a><br>
+                <% } %>
+                
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="jumbotron jumbo text-center" id="dash-welcome-jumbo">
+                <h1>Welcome to <%=title%> !!</h1>
+            </div>
+            <div class="container" style="width: 50%; margin-top: 15%">
+                  
+            </div>
+        </div>
+    </div>
+<%include ./partials/footer.ejs%>

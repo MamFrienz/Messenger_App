@@ -1,0 +1,143 @@
+<%include ./partials/header.ejs%>
+    <div class="row">
+        <div class="col-md-3 text-center" id="dash-side-bar">
+            <strong><h1>Members</h1></strong>
+            <div class="container" id="members">
+                <% for(var i=0; i<members.length; i++){ %>
+                    <a href="#"><strong><%= members[i].name %></strong></a><br>
+                <% } %>
+                <div style="padding-top: 180%"></div>
+                <div id="timer">
+                    <div>
+                        <p style="color:white;font-weight:bold">
+                            Time remaining: <span id="time2">900</span>s
+                        </p>
+                        <br/>
+                        <button type="button" class="btn btn-primary font-weight-bold" id="startBtn">Start</button>    
+                        <button type="button" class="btn btn-danger font-weight-bold" id="stopBtn">Stop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <div class="jumbotron jumbo text-center" id="dash-welcome-jumbo">
+                <h1>Welcome to <%=title%> !!</h1>
+            </div>
+            <div class="container" style="width: 50%; margin-top: 15%">
+                <ul id="messages"></ul>
+                <div id="form" class="form-group input-group">
+                    <input id="msg-box" class="form-control" autocomplete="off">
+                    <span class="input-group-btn">
+                        <button id="send-btn" class="btn btn-dark">Send</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+     <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+      
+    <script>
+        init();
+        
+        $(function () {
+            var socket = io();
+            $('#send-btn').click(function(){
+                socket.emit('chat message', $('#msg-box').val());
+                $('#msg-box').val('');
+                return false;
+            });
+            
+            socket.on('chat message', function(msg){
+                //var temp = userID + ": " + msg;
+                $('#messages').append($('<li>').text(msg));
+                
+                var new_msg = {
+                    Text: msg
+                }
+                
+                console.log(new_msg);
+                
+            });
+        });
+        function Timer(count, interval) {
+            this.count = count ? count : 0;
+            this.interval = interval ? interval : 0;
+            this.isPaused = false;
+            this.intervalID = 0;
+            this.outputSpanID = "time";
+            this.callback = null;
+        }
+        
+        // init function
+        Timer.prototype.init = function() {
+            this.alert();
+        };
+        
+        
+        // print time
+        Timer.prototype.printTime = function() {
+            document.getElementById(this.outputSpanID).innerHTML = this.count;
+        };
+        
+        // start the timer
+        Timer.prototype.start = function(e) {
+        
+            //clear interval
+            if (this.intervalID != 0) {
+                clearInterval(this.intervalID);
+            }
+        
+            //print time
+            this.printTime();
+        
+            var self = this;
+        
+            //setInterval method sets the interval for repeating the function
+            this.intervalID = setInterval(function() {
+                self.count -= 1;
+                if (self.count >= 0) {
+                    self.printTime();
+                } else {
+                    self.stop();
+                }
+            }, self.interval);
+        };
+        
+        // stop timer
+        Timer.prototype.stop = function() {
+            //this.alert();
+            clearInterval(this.intervalID);
+            this.count = 0;
+            this.interval = 0;
+            this.isPaused = false;
+            this.printTime();
+            if(this.callback) {
+                this.callback();
+            }
+        };
+        
+        /**
+         * init method
+         */
+        function init() {
+        
+            var timer2 = new Timer(900, 1000);
+            timer2.outputSpanID = "time2";
+            
+            /* get the buttons and attach eventhandlers */
+            var startBtn = document.getElementById("startBtn");
+            var stopBtn = document.getElementById("stopBtn");
+            startBtn.onclick = function() {
+                 timer2.start();
+             };
+            stopBtn.onclick = function() {
+                timer2.stop();
+            };
+        }
+    </script>
+<%include ./partials/footer.ejs%>

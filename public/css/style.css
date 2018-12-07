@@ -1,0 +1,49 @@
+.jumbo{
+    background-color: #BCC6CC;
+    color: white;
+}
+
+#body{
+    background-color: #50C878;
+}
+
+#login-card-size{
+    width: 30%;
+    margin-top: 12%;
+}
+
+#dash-side-bar{
+    background-color: #29663E;
+    height: 100vh;
+    color: white;
+}
+
+#dash-welcome-jumbo{
+    width: 99%;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+#form { 
+    padding: 3px; 
+    position: fixed; 
+    bottom: 0; 
+    width: 50%; 
+}
+#msg-box {
+    float:left;
+}
+#send-btn {
+    float:right;
+}
+#messages { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+}
+#messages li { 
+    padding: 5px 10px; 
+}
+#messages li:nth-child(odd) { 
+    background: #c9efce; 
+}
